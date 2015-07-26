@@ -1,4 +1,5 @@
 from QueueConfig import *
+config = Config(CONFIGDIR)
 from ActionFramework import *
 
 printer = PluginPrinterInstance()
@@ -75,10 +76,35 @@ def addWithPhone(**kwargs):
 		cprint("Cannot add {} to the queue.".format(name), color=bcolors.YELLOW)
 
 
+prevLength = 0
 sentTo = []
 
+def text(phone):
+	if not phone:
+		return
+	pass # texting protocol goes here
+
 def upkeep(**kwargs):
-	pass # For now
+	global sentTo, prevLength
+	queue = kwargs["queue"]
+
+	for i in sentTo:
+		job, masterindex, priority, index = queue.getQueueObject(i)
+		if not job:
+			sentTo.remove(i)
+
+	masterqueue = queue.masterqueue()
+	if masterqueue:
+		job = masterqueue[0]
+		uuid = job["uuid"]
+		if uuid not in sentTo:
+			sentTo.append(uuid)
+			if prevLength != 0:
+				cprint("Texting {}.\n({})".format(job["name"], uuid))
+				text(job["phone"])
+	prevLength = len(masterqueue)
+		 
+
 
 requiredTags = {
 	"phone": "none"
