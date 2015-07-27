@@ -1,6 +1,7 @@
 from QueueConfig import *
 config = Config(CONFIGDIR)
 from ActionFramework import *
+from ParseArgs import args as argvs
 
 printer = PluginPrinterInstance()
 printer.setname("Texting")
@@ -18,7 +19,7 @@ def addWithPhone(**kwargs):
 			"title": "Incomplete data",
 			"text": "Please fill out the submission form fully."
 			}, ws)
-		if args.loud:
+		if argvs.loud:
 			cprint("Insufficient data to add job to queue.", color=bcolors.YELLOW)
 		return
 
