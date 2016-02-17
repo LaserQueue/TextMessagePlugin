@@ -56,19 +56,17 @@ def upkeep(**kwargs):
 	prevLength = len(masterqueue)
 		 
 
-
-requiredTags = {
-	"phone": "none"
-}
-
-hideFromClient = [
+eventRegistry = Registry()
+eventRegistry.on('socket',
+	"add#", 
+	addNumberToJob, 
+	{"uuid": str, "phone": str}
+)
+eventRegistry.on('requiredTag',
+	"phone",
+	"none"
+)
+eventRegistry.on('hideFromClient',
 	"phone"
-]
-
-socketCommands = [
-	SocketCommand("add#", addNumberToJob, {"uuid": str, "phone": str})
-]
-
-requiresAuth = [
-]
+)
 
